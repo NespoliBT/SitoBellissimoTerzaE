@@ -1,25 +1,166 @@
 <html>
-    <head>
-        <title>Migliore sito al mondo</title>
-        <style>
-            h1 {
-                transition: 1s;
-                color: #f2d5a3;
-                background: #babaec;
-                text-align: center;
-                padding: 16px;
-                border-radius: 16px;
+
+<head>
+    <title>Migliore sito al mondo</title>
+    <style>
+        #peter {
+            transition: 2s;
+            width: 100px;
+        }
+
+        .peterContainer {
+            position: relative;
+        }
+
+        #ombelico {
+            position: absolute;
+            bottom: 48px;
+            left: 60px;
+            content: "";
+            height: 10px;
+            width: 10px;
+            z-index: 1;
+        }
+
+        #peter.shake {
+            transform: scaleY(0.8);
+        }
+
+        #peter.lost {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 2;
+        }
+
+        .horse {
+            width: 100px;
+        }
+        #homer {
+            transition: 5s;
+            opacity: 0;
+            transform: translateY(-100px);
+            width: 100px;
+            position: absolute;
+            right: 30px;
+            top: 0;
+        }
+         #homer.comparso {
+            opacity: 1;
+            transform: translateY(0px);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Fai piu punti possibili prima che arrivi HOMER</h1>
+    <div class="peterContainer">
+        <div id="ombelico"></div>
+        <img src="peter.jpg" id="peter" />
+    </div>
+    <button id="compra">Compra cavallo</button>
+    <h1>
+        <span id="peterName">Peter: </span>
+        <span id="punteggio">0</span>
+    </h1>
+    <div id="horseContainer"></div>
+    <img src="homer.png" id="homer">
+    <script>
+        const peter = document.getElementById("peter")
+        const punteggio = document.getElementById("punteggio")
+        const ombelico = document.getElementById("ombelico")
+        const peterName = document.getElementById("peterName")
+        const compra = document.getElementById("compra")
+        const horseContainer = document.getElementById("horseContainer")
+        const homer = document.getElementById("homer")
+        let punti = 0;
+        let nCavalli = 0;
+        let lost = false;
+
+        peter.addEventListener("click", () => {
+            punti++
+            punteggio.innerHTML = punti
+            peterName.innerHTML = "Peter: "
+
+            if (punti == 67) {
+                peter.src = "explosion.gif"
+            } else {
+                peter.src = "peter.jpg"
             }
 
-            h1:hover {
-                rotate: 360deg;
+            if (punti % 100 == 0) {
+                peter.src = "fallen.png"
             }
-        </style>
-    </head>
-    <body>
-        <h1>Hello world</h1>
-        <script>
-            console.log("hello world")
-        </script>
-    </body>
+            
+            if (punti % 200 == 0) {
+                peter.src = "retep.webp"
+                peterName.innerHTML = "reteP: "
+
+            }
+        })
+
+        compra.addEventListener("click", () => {
+            if(punti >= 50) {
+                punti -= 50;
+                punteggio.innerHTML = punti
+                nCavalli++;
+
+                let horse = document.createElement("img")
+                horse.src = "horse.png"
+                horse.classList.add("horse")
+                horseContainer.append(horse)
+
+            }
+        })
+
+        ombelico.addEventListener("click", () => {
+            peter.classList.toggle("shake")
+        })
+
+        setInterval(() => {
+            punti += (nCavalli * 1)
+                punteggio.innerHTML = punti
+
+            peterName.innerHTML = "Peter: "
+
+            if (punti == 67) {
+                peter.src = "explosion.gif"
+            } else {
+                peter.src = "peter.jpg"
+            
+                if(punti > 0 && !lost) {
+
+                    
+                    if (punti % 100 == 0) {
+                        peter.src = "fallen.png"
+                    }
+                    
+                    if (punti % 200 == 0) {
+                        peter.src = "retep.webp"
+                        peterName.innerHTML = "reteP: "
+                        
+                    }
+                }
+            }
+        }, 1000);
+
+        setTimeout(() => {
+            homer.classList.add("comparso")
+
+            setTimeout(() => {
+                if(punti >= 300) {
+                    alert("Hai vinto complimenti!")
+                } else {
+                    peter.src = "explosion.gif"
+                    peter.classList.add("lost")
+                    lost = true;
+                }
+            }, 2000);
+        }, 30000);
+
+    </script>
+</body>
+
 </html>
